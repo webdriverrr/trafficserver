@@ -265,7 +265,7 @@ init_accept_HttpProxyServer(int n_accept_threads)
   }
 
   // Do the configuration defined ports.
-  for (int i = 0, n = proxy_ports.length(); i < n; ++i) {
+  for (int i = 0, n = proxy_ports.size(); i < n; ++i) {
     MakeHttpProxyAcceptor(HttpProxyAcceptors.add(), proxy_ports[i], n_accept_threads);
   }
 }
@@ -281,9 +281,9 @@ start_HttpProxyServer()
   ///////////////////////////////////
 
   ink_assert(!called_once);
-  ink_assert(proxy_ports.length() == HttpProxyAcceptors.length());
+  ink_assert(proxy_ports.size() == HttpProxyAcceptors.length());
 
-  for (int i = 0, n = proxy_ports.length(); i < n; ++i) {
+  for (int i = 0, n = proxy_ports.size(); i < n; ++i) {
     HttpProxyAcceptor &acceptor = HttpProxyAcceptors[i];
     HttpProxyPort &port         = proxy_ports[i];
     if (port.isSSL()) {
