@@ -55,10 +55,10 @@ public:
   void update(PriorityQueueEntry<T> *);
   void update(PriorityQueueEntry<T> *, bool);
   void erase(PriorityQueueEntry<T> *);
-  const Vec<PriorityQueueEntry<T> *> &dump() const;
+  const std::vector<PriorityQueueEntry<T> *> &dump() const;
 
 private:
-  Vec<PriorityQueueEntry<T> *> _v;
+  std::vector<PriorityQueueEntry<T> *> _v;
 
   void _swap(uint32_t, uint32_t);
   void _bubble_up(uint32_t);
@@ -66,7 +66,7 @@ private:
 };
 
 template <typename T, typename Comp>
-const Vec<PriorityQueueEntry<T> *> &
+const std::vector<PriorityQueueEntry<T> *> &
 PriorityQueue<T, Comp>::dump() const
 {
   return _v;
