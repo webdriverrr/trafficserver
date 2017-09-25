@@ -49,6 +49,8 @@
 #include "ts/I_Layout.h"
 #include "ts/ink_cap.h"
 
+#include <vector>
+
 // global variable
 static CallbackTable *local_event_callbacks;
 
@@ -209,7 +211,7 @@ Lerror:
 #include <sys/ptrace.h>
 #include <cxxabi.h>
 
-typedef Vec<pid_t> threadlist;
+typedef std::vector<pid_t> threadlist;
 
 static threadlist
 threads_for_process(pid_t proc)
