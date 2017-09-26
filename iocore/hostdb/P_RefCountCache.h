@@ -154,7 +154,7 @@ public:
   template <class Iterator> void dealloc_entry(Iterator ptr);
 
   size_t count() const;
-  void copy(Vec<RefCountCacheHashEntry *> &items);
+  void copy(std::vector<RefCountCacheHashEntry *> &items);
 
   typedef typename TSHashTable<RefCountCacheHashing>::iterator iterator_type;
   typedef typename TSHashTable<RefCountCacheHashing>::self hash_type;
@@ -339,7 +339,7 @@ RefCountCachePartition<C>::count() const
 
 template <class C>
 void
-RefCountCachePartition<C>::copy(Vec<RefCountCacheHashEntry *> &items)
+RefCountCachePartition<C>::copy(std::vector<RefCountCacheHashEntry *> &items)
 {
   for (RefCountCachePartition<C>::iterator_type i = this->item_map.begin(); i != this->item_map.end(); ++i) {
     RefCountCacheHashEntry *val = RefCountCacheHashEntry::alloc();
@@ -419,7 +419,7 @@ private:
   int max_size;  // Total size
   int max_items; // Total number of items allowed
   unsigned int num_partitions;
-  Vec<RefCountCachePartition<C> *> partitions;
+  std::vector<RefCountCachePartition<C> *> partitions;
   // Header
   RefCountCacheHeader header; // Our header
   RecRawStatBlock *rsb;
