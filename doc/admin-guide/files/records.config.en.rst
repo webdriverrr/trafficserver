@@ -22,7 +22,7 @@
 records.config
 **************
 
-The :file:`records.config` file (by default, located in
+The :file:`records.config` file (by default (:ts:cv:`proxy.config.config_dir`), located in
 ``/usr/local/etc/trafficserver/``) is a list of configurable variables used by
 the |TS| software. Many of the variables in :file:`records.config` are set
 automatically when you set configuration options with :option:`traffic_ctl config set`. After you
@@ -226,7 +226,8 @@ System Variables
    This is a read-only configuration option that contains the
    ``SYSCONFDIR`` value specified at build time relative to the
    installation prefix. The ``$TS_ROOT`` environment variable can
-   be used alter the installation prefix at run time.
+   be used alter the installation prefix at run time. The directory must
+   allow read/write access for configuration reloads.
 
 .. ts:cv:: CONFIG proxy.config.syslog_facility STRING LOG_DAEMON
 
@@ -1665,17 +1666,24 @@ Proxy User Variables
 
    When enabled (``1``), Traffic Server adds the client IP address to the ``X-Forwarded-For`` header.
 
-.. ts:cv:: CONFIG proxy.config.http.normalize_ae_gzip INT 1
+.. ts:cv:: CONFIG proxy.config.http.normalize_ae INT 1
    :reloadable:
    :overridable:
 
-   Enable (``1``) to normalize all ``Accept-Encoding:`` headers to one of the following:
+   Specifies normalization, if any, of ``Accept-Encoding:`` headers.
 
-   -  ``Accept-Encoding: gzip`` (if the header has ``gzip`` or ``x-gzip`` with any ``q``) **OR**
-   -  *blank* (for any header that does not include ``gzip``)
+   ===== ======================================================================
+   Value Description
+   ===== ======================================================================
+   ``0`` No normalization.
+   ``1`` ``Accept-Encoding: gzip`` (if the header has ``gzip`` or ``x-gzip`` with any ``q``) **OR**
+         *blank* (for any header that does not include ``gzip``)
+   ``2`` ``Accept-Encoding: br`` if the header has ``br`` (with any ``q``) **ELSE**
+         normalize as for value ``1``
+   ===== ======================================================================
 
-   This is useful for minimizing cached alternates of documents (e.g. ``gzip, deflate`` vs. ``deflate, gzip``). Enabling this option is
-   recommended if your origin servers use no encodings other than ``gzip``.
+   This is useful for minimizing cached alternates of documents (e.g. ``gzip, deflate`` vs. ``deflate, gzip``).
+   Enabling this option is recommended if your origin servers use no encodings other than ``gzip`` or ``br`` (Brotli).
 
 Security
 ========
@@ -3439,6 +3447,13 @@ HTTP/2 Configuration
    transaction stalls. Lowering this timeout can ease pressure on the proxy if
    misconfigured or misbehaving clients are opening a large number of
    connections without submitting requests.
+
+.. ts:cv:: CONFIG proxy.config.http2.push_diary_size INT 256
+   :reloadable:
+
+   Indicates the maximum number of HTTP/2 server pushes that are remembered per
+   HTTP/2 connection to avoid duplicate pushes on the same connection. If the
+   maximum number is reached, new entries are not remembered.
 
 Plug-in Configuration
 =====================

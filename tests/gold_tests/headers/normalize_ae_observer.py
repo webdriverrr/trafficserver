@@ -1,5 +1,6 @@
-#!/bin/sh
-#
+'''
+Extract the protocol information from the Accept-Encoding headers and store it in a log file for later verification.
+'''
 #  Licensed to the Apache Software Foundation (ASF) under one
 #  or more contributor license agreements.  See the NOTICE file
 #  distributed with this work for additional information
@@ -16,25 +17,23 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-INSTALL="${WORKSPACE}/${BUILD_NUMBER}/install"
+log = open('normalize_ae.log', 'w')
 
-mkdir -p ${INSTALL}
-cd src
-autoreconf -if
+def observe(headers):
 
-./configure --prefix="${INSTALL}" \
-            --with-user=jenkins \
-            --enable-experimental-plugins \
-            --enable-example-plugins \
-            --enable-ccache \
-            --enable-debug \
-            --enable-werror
+    seen = False
+    for h in headers.items():
+        if h[0] == "X-Au-Test":
+            log.write("X-Au-Test: {}\n".format(h[1]))
 
-# Build and run regressions
-${ATS_MAKE} ${ATS_MAKE_FLAGS} V=1 Q=
-${ATS_MAKE} check VERBOSE=Y V=1 && ${ATS_MAKE} install
+        if h[0] == "Accept-Encoding":
+            log.write("{}\n".format(h[1]))
+            seen = True
 
-${INSTALL}/bin/traffic_server -K -k -R 1
-[ "0" != "$?" ] && exit -1
+    if not seen:
+        log.write("ACCEPT-ENCODING MISSING\n")
 
-exit 0
+    log.write("-\n")
+    log.flush()
+
+Hooks.register(Hooks.ReadRequestHook, observe)

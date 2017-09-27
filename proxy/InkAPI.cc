@@ -7647,7 +7647,11 @@ TSHttpTxnServerPush(TSHttpTxn txnp, const char *url, int url_len)
   HttpSM *sm          = reinterpret_cast<HttpSM *>(txnp);
   Http2Stream *stream = dynamic_cast<Http2Stream *>(sm->ua_session);
   if (stream) {
-    stream->push_promise(url_obj);
+    Http2ClientSession *parent = static_cast<Http2ClientSession *>(stream->get_parent());
+    if (!parent->is_url_pushed(url, url_len)) {
+      stream->push_promise(url_obj);
+      parent->add_url_to_pushed_table(url, url_len);
+    }
   }
   url_obj.destroy();
 }
@@ -7962,8 +7966,8 @@ _conf_to_memberp(TSOverridableConfigKey conf, OverridableHttpConfigParams *overr
   case TS_CONFIG_HTTP_CACHE_RANGE_LOOKUP:
     ret = _memberp_to_generic(&overridableHttpConfig->cache_range_lookup, typep);
     break;
-  case TS_CONFIG_HTTP_NORMALIZE_AE_GZIP:
-    ret = _memberp_to_generic(&overridableHttpConfig->normalize_ae_gzip, typep);
+  case TS_CONFIG_HTTP_NORMALIZE_AE:
+    ret = _memberp_to_generic(&overridableHttpConfig->normalize_ae, typep);
     break;
   case TS_CONFIG_HTTP_DEFAULT_BUFFER_SIZE:
     ret = _memberp_to_generic(&overridableHttpConfig->default_buffer_size_index, typep);
@@ -8324,6 +8328,12 @@ TSHttpTxnConfigFind(const char *name, int length, TSOverridableConfigKey *conf, 
     }
     break;
 
+  case 30:
+    if (!strncmp(name, "proxy.config.http.normalize_ae", length)) {
+      cnf = TS_CONFIG_HTTP_NORMALIZE_AE;
+    }
+    break;
+
   case 31:
     if (!strncmp(name, "proxy.config.http.chunking.size", length)) {
       cnf = TS_CONFIG_HTTP_CHUNKING_SIZE;
@@ -8348,17 +8358,8 @@ TSHttpTxnConfigFind(const char *name, int length, TSOverridableConfigKey *conf, 
     break;
 
   case 35:
-    switch (name[length - 1]) {
-    case 'e':
-      if (!strncmp(name, "proxy.config.http.cache.range.write", length)) {
-        cnf = TS_CONFIG_HTTP_CACHE_RANGE_WRITE;
-      }
-      break;
-    case 'p':
-      if (!strncmp(name, "proxy.config.http.normalize_ae_gzip", length)) {
-        cnf = TS_CONFIG_HTTP_NORMALIZE_AE_GZIP;
-      }
-      break;
+    if (!strncmp(name, "proxy.config.http.cache.range.write", length)) {
+      cnf = TS_CONFIG_HTTP_CACHE_RANGE_WRITE;
     }
     break;
 

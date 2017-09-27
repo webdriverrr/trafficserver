@@ -564,7 +564,8 @@ static const RecordElement RecordsConfig[] =
   ,
   {RECT_CONFIG, "proxy.config.http.enable_http_stats", RECD_INT, "1", RECU_DYNAMIC, RR_NULL, RECC_INT, "[0-1]", RECA_NULL}
   ,
-  {RECT_CONFIG, "proxy.config.http.normalize_ae_gzip", RECD_INT, "1", RECU_DYNAMIC, RR_NULL, RECC_INT, "[0-1]", RECA_NULL}
+  // This defaults to a special invalid value so the HTTP transaction handling code can tell that it was not explicitly set.
+  {RECT_CONFIG, "proxy.config.http.normalize_ae", RECD_INT, "1", RECU_DYNAMIC, RR_NULL, RECC_INT, "[0-2]", RECA_NULL}
   ,
 
   //        ####################################################
@@ -1330,6 +1331,8 @@ static const RecordElement RecordsConfig[] =
   {RECT_CONFIG, "proxy.config.http2.no_activity_timeout_in", RECD_INT, "120", RECU_DYNAMIC, RR_NULL, RECC_STR, "^[0-9]+$", RECA_NULL}
   ,
   {RECT_CONFIG, "proxy.config.http2.active_timeout_in", RECD_INT, "900", RECU_DYNAMIC, RR_NULL, RECC_STR, "^[0-9]+$", RECA_NULL}
+  ,
+  {RECT_CONFIG, "proxy.config.http2.push_diary_size", RECD_INT, "256", RECU_DYNAMIC, RR_NULL, RECC_STR, "^[0-9]+$", RECA_NULL}
   ,
 
   //# Add LOCAL Records Here
