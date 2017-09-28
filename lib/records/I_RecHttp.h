@@ -326,7 +326,7 @@ public:
       @return @c true if a valid port was found, @c false if none.
   */
   static bool loadValue(std::vector<self> &ports, ///< Destination for found port data.
-                        const char *value ///< Source port data.
+                        const char *value         ///< Source port data.
                         );
 
   /** Load ports from a value string into the global ports.
@@ -354,8 +354,8 @@ public:
       @return The port if found, @c nullptr if not.
   */
   static const self *findHttp(Group const &ports,         ///< Group to search.
-                        uint16_t family = AF_UNSPEC ///< Desired address family.
-                        );
+                              uint16_t family = AF_UNSPEC ///< Desired address family.
+                              );
 
   /** Find an HTTP port in the global ports.
       If @a family is specified then only ports for that family

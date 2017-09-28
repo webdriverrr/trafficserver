@@ -146,7 +146,7 @@ struct EvaluatorList {
   EvaluatorList() : update(true), passes(0) {}
   ~EvaluatorList()
   {
-    for (auto &e: this->evaluators) {
+    for (auto &e : this->evaluators) {
       delete e;
     }
   }
@@ -163,7 +163,7 @@ struct EvaluatorList {
   void
   unbind(lua_State *L) const
   {
-    for (auto &e: this->evaluators) {
+    for (auto &e : this->evaluators) {
       e->unbind(L);
     }
   }
@@ -174,7 +174,7 @@ struct EvaluatorList {
     ink_hrtime start = ink_get_hrtime_internal();
     ink_hrtime elapsed;
 
-    for (auto &e: this->evaluators) {
+    for (auto &e : this->evaluators) {
       e->eval(L);
     }
 

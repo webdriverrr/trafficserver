@@ -633,8 +633,8 @@ FileManager::rereadConfig()
     if (rb->checkForUserUpdate(rb->isVersioned() ? ROLLBACK_CHECK_AND_UPDATE : ROLLBACK_CHECK_ONLY)) {
       changedFiles.push_back(rb);
       if (rb->isChildRollback()) {
-        if (std::find(parentFileNeedChange.begin(), parentFileNeedChange.end(),
-            rb->getParentRollback()) == parentFileNeedChange.end()) {
+        if (std::find(parentFileNeedChange.begin(), parentFileNeedChange.end(), rb->getParentRollback()) ==
+            parentFileNeedChange.end()) {
           parentFileNeedChange.push_back(rb->getParentRollback());
         }
       }

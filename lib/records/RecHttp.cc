@@ -181,7 +181,7 @@ const HttpProxyPort *
 HttpProxyPort::findHttp(Group const &ports, uint16_t family)
 {
   bool check_family_p = ats_is_ip(family);
-  const self *zret          = nullptr;
+  const self *zret    = nullptr;
   for (int i = 0, n = ports.size(); i < n && !zret; ++i) {
     const self &p = ports[i];
     if (p.m_port &&                               // has a valid port
@@ -265,7 +265,7 @@ HttpProxyPort::processOptions(const char *opts)
   bool bracket_p      = false; // found an open bracket in the input?
   const char *value;           // Temp holder for value of a prefix option.
   IpAddr ip;                   // temp for loading IP addresses.
-  std::vector<char *> values;          // Pointers to single option values.
+  std::vector<char *> values;  // Pointers to single option values.
 
   // Make a copy we can modify safely.
   size_t opts_len = strlen(opts) + 1;

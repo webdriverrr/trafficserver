@@ -459,7 +459,7 @@ MultiTextMod::~MultiTextMod()
 void
 MultiTextMod::print(FILE *f) const
 {
-  for (auto text_iter: this->text_vec) {
+  for (auto text_iter : this->text_vec) {
     fprintf(f, "%s=%*s ", this->name(), static_cast<int>(text_iter.size()), text_iter.data());
   }
 }
@@ -591,7 +591,7 @@ SuffixMod::check(HttpRequestData *req) const
     return true;
   }
 
-  for (auto text_iter: this->text_vec) {
+  for (auto text_iter : this->text_vec) {
     if (path_len >= static_cast<int>(text_iter.size()) &&
         0 == strncasecmp(path + path_len - text_iter.size(), text_iter.data(), text_iter.size())) {
       return true;
@@ -755,7 +755,7 @@ ControlBase::CheckModifiers(HttpRequestData *request_data)
     return false;
   }
 
-  for (auto& cur_mod: _mods) {
+  for (auto &cur_mod : _mods) {
     if (cur_mod && !cur_mod->check(request_data)) {
       return false;
     }
@@ -778,7 +778,7 @@ static const char *errorFormats[] = {
 ControlBase::Modifier *
 ControlBase::findModOfType(Modifier::Type t) const
 {
-  for (auto& m: _mods) {
+  for (auto &m : _mods) {
     if (m && t == m->type()) {
       return m;
     }

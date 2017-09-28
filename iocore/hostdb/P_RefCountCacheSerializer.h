@@ -109,7 +109,7 @@ template <class C> RefCountCacheSerializer<C>::~RefCountCacheSerializer()
     socketManager.close(fd);
   }
 
-  for (auto &entry: this->partition_items) {
+  for (auto &entry : this->partition_items) {
     RefCountCacheHashEntry::free<C>(entry);
   }
   this->partition_items.clear();
@@ -188,7 +188,7 @@ RefCountCacheSerializer<C>::write_partition(int /* event */, Event *e)
   }
 
   // Clear the copied partition for the next round.
-  for (auto &entry: this->partition_items) {
+  for (auto &entry : this->partition_items) {
     RefCountCacheHashEntry::free<C>(entry);
   }
   this->partition_items.clear();
