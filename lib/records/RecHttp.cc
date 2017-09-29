@@ -168,13 +168,7 @@ HttpProxyPort::HttpProxyPort()
 bool
 HttpProxyPort::hasSSL(Group const &ports)
 {
-  bool zret = false;
-  for (int i = 0, n = ports.size(); i < n && !zret; ++i) {
-    if (ports[i].isSSL()) {
-      zret = true;
-    }
-  }
-  return zret;
+  return std::any_of(ports.begin(), ports.end(), [](HttpProxyPort const& port){ return port.isSSL(); });
 }
 
 const HttpProxyPort *

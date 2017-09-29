@@ -1781,9 +1781,7 @@ fail:
     EVP_MD_CTX_free(digest);
   SSL_CLEAR_PW_REFERENCES(ctx)
   SSLReleaseContext(ctx);
-  for (unsigned int i = 0; i < certList.size(); i++) {
-    X509_free(certList[i]);
-  }
+  for (auto cert : certList) X509_free(cert);
 
   return nullptr;
 }
@@ -1793,7 +1791,7 @@ SSLCreateServerContext(const SSLConfigParams *params)
 {
   std::vector<X509 *> cert_list;
   SSL_CTX *ctx = SSLInitServerContext(params, nullptr, cert_list);
-  ink_assert(cert_list.size() == 0);
+  ink_assert(!cert_list.empty());
   return ctx;
 }
 
@@ -1811,8 +1809,8 @@ ssl_store_ssl_context(const SSLConfigParams *params, SSLCertLookup *lookup, cons
   }
 
   const char *certname = sslMultCertSettings->cert.get();
-  for (unsigned i = 0; i < cert_list.size(); ++i) {
-    if (0 > SSLCheckServerCertNow(cert_list[i], certname)) {
+  for (auto cert : cert_list) {
+    if (0 > SSLCheckServerCertNow(cert, certname)) {
       /* At this point, we know cert is bad, and we've already printed a
          descriptive reason as to why cert is bad to the log file */
       Debug("ssl", "Marking certificate as NOT VALID: %s", certname);
@@ -1867,8 +1865,8 @@ ssl_store_ssl_context(const SSLConfigParams *params, SSLCertLookup *lookup, cons
   if (SSLConfigParams::ssl_ocsp_enabled) {
     Debug("ssl", "ssl ocsp stapling is enabled");
     SSL_CTX_set_tlsext_status_cb(ctx, ssl_callback_ocsp_stapling);
-    for (unsigned i = 0; i < cert_list.size(); ++i) {
-      if (!ssl_stapling_init_cert(ctx, cert_list[i], certname)) {
+    for (auto cert : cert_list) {
+      if (!ssl_stapling_init_cert(ctx, cert, certname)) {
         Warning("fail to configure SSL_CTX for OCSP Stapling info for certificate at %s", (const char *)certname);
       }
     }
@@ -1885,8 +1883,8 @@ ssl_store_ssl_context(const SSLConfigParams *params, SSLCertLookup *lookup, cons
   // this code is updated to reconfigure the SSL certificates, it will need some sort of
   // refcounting or alternate way of avoiding double frees.
   Debug("ssl", "importing SNI names from %s", (const char *)certname);
-  for (unsigned i = 0; i < cert_list.size(); ++i) {
-    if (ssl_index_certificate(lookup, SSLCertContext(ctx, sslMultCertSettings->opt), cert_list[i], certname)) {
+  for (auto cert : cert_list) {
+    if (ssl_index_certificate(lookup, SSLCertContext(ctx, sslMultCertSettings->opt), cert, certname)) {
       inserted = true;
     }
   }
