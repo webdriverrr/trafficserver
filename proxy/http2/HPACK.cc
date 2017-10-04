@@ -219,9 +219,9 @@ HpackLookupResult
 HpackIndexingTable::lookup(const char *name, int name_len, const char *value, int value_len) const
 {
   HpackLookupResult result;
-  const int entry_num = TS_HPACK_STATIC_TABLE_ENTRY_NUM + _dynamic_table->size();
+  const unsigned int entry_num = TS_HPACK_STATIC_TABLE_ENTRY_NUM + _dynamic_table->length();
 
-  for (int index = 1; index < entry_num; ++index) {
+  for (unsigned int index = 1; index < entry_num; ++index) {
     const char *table_name, *table_value;
     int table_name_len = 0, table_value_len = 0;
 
@@ -274,7 +274,7 @@ HpackIndexingTable::get_header_field(uint32_t index, MIMEFieldWrapper &field) co
     // static table
     field.name_set(STATIC_TABLE[index].name, STATIC_TABLE[index].name_size);
     field.value_set(STATIC_TABLE[index].value, STATIC_TABLE[index].value_size);
-  } else if (index < TS_HPACK_STATIC_TABLE_ENTRY_NUM + _dynamic_table->size()) {
+  } else if (index < TS_HPACK_STATIC_TABLE_ENTRY_NUM + _dynamic_table->length())  {
     // dynamic table
     const MIMEField *m_field = _dynamic_table->get_header_field(index - TS_HPACK_STATIC_TABLE_ENTRY_NUM);
 
