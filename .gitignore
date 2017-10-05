@@ -83,6 +83,7 @@ lib/ts/test_X509HostnameValidator
 lib/ts/test_tsutil
 lib/ts/test_MemView
 lib/ts/test_Scalar
+lib/ts/test_tslib
 lib/perl/lib/Apache/TS.pm
 
 iocore/net/test_certlookup
