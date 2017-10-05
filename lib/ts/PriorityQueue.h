@@ -26,6 +26,7 @@
 
 #include "ts/ink_assert.h"
 #include <vector>
+#include <algorithm>
 
 template <typename T> struct PriorityQueueEntry {
   PriorityQueueEntry(T n) : index(0), node(n){};
@@ -78,7 +79,11 @@ PriorityQueue<T, Comp>::in(PriorityQueueEntry<T> *entry)
 {
   ink_release_assert(entry != NULL);
 
-  return _v.at(entry->index) != NULL;
+  if (std::find(_v.begin(), _v.end(), entry) != _v.end()) {
+    return true;
+  }
+
+  return false;
 }
 
 template <typename T, typename Comp>
@@ -137,7 +142,7 @@ PriorityQueue<T, Comp>::erase(PriorityQueueEntry<T> *entry)
 
   // If the entry doesn't belong to this queue just return.
   if (entry != _v[entry->index]) {
-    ink_assert(!_v.at(entry->index));
+    ink_assert(!in(entry));
     return;
   }
 
