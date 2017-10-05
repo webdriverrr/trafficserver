@@ -85,7 +85,7 @@ template <typename T, typename Comp>
 bool
 PriorityQueue<T, Comp>::empty()
 {
-  return _v.size() == 0;
+  return _v.empty();
 }
 
 template <typename T, typename Comp>
