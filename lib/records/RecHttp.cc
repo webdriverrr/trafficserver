@@ -168,7 +168,7 @@ HttpProxyPort::HttpProxyPort()
 bool
 HttpProxyPort::hasSSL(Group const &ports)
 {
-  return std::any_of(ports.begin(), ports.end(), [](HttpProxyPort const& port){ return port.isSSL(); });
+  return std::any_of(ports.begin(), ports.end(), [](HttpProxyPort const &port) { return port.isSSL(); });
 }
 
 const HttpProxyPort *

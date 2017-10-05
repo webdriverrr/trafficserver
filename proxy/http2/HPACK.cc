@@ -274,7 +274,7 @@ HpackIndexingTable::get_header_field(uint32_t index, MIMEFieldWrapper &field) co
     // static table
     field.name_set(STATIC_TABLE[index].name, STATIC_TABLE[index].name_size);
     field.value_set(STATIC_TABLE[index].value, STATIC_TABLE[index].value_size);
-  } else if (index < TS_HPACK_STATIC_TABLE_ENTRY_NUM + _dynamic_table->length())  {
+  } else if (index < TS_HPACK_STATIC_TABLE_ENTRY_NUM + _dynamic_table->length()) {
     // dynamic table
     const MIMEField *m_field = _dynamic_table->get_header_field(index - TS_HPACK_STATIC_TABLE_ENTRY_NUM);
 
