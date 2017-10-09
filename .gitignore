@@ -149,6 +149,10 @@ rc/trafficserver.service
 
 tsxs
 
+test_metrics
+test_s3auth
+
+
 blib/
 
 GPATH
