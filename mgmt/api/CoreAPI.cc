@@ -340,7 +340,7 @@ ServerBacktrace(unsigned /* options */, char **trace)
   threadlist threads(threads_for_process(lmgmt->watched_process_pid));
   TextBuffer text(0);
 
-  Debug("backtrace", "tracing %zd threads for traffic_server PID %ld", threads.count(), (long)lmgmt->watched_process_pid);
+  Debug("backtrace", "tracing %zd threads for traffic_server PID %ld", threads.size(), (long)lmgmt->watched_process_pid);
 
   for (auto threadid : threads) {
     Debug("backtrace", "tracing thread %ld", (long)threadid);
