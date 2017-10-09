@@ -27,8 +27,9 @@
 #include <ts/ink_inet.h>
 #include <ts/ink_resolver.h>
 #include <ts/apidefs.h>
-#include <ts/Vec.h>
 #include <ts/apidefs.h>
+#include <ts/ink_assert.h>
+#include <vector>
 
 /// Load default inbound IP addresses from the configuration file.
 void RecHttpLoadIp(const char *name, ///< Name of value in configuration file.
