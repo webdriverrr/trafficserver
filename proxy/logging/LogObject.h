@@ -33,7 +33,7 @@
 #include "LogBuffer.h"
 #include "LogAccess.h"
 #include "LogFilter.h"
-#include "ts/Vec.h"
+#include <vector>
 
 /*-------------------------------------------------------------------------
   LogObject
